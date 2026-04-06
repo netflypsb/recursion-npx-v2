@@ -16,6 +16,8 @@ An NPX-installable MCP (Model Context Protocol) server for **navigation-enabled 
 
 ## Quick Start
 
+**NPM Package:** [recursion-mcp-v2](https://www.npmjs.com/package/recursion-mcp-v2)
+
 ```bash
 # Run via NPX (no install needed)
 npx recursion-mcp-v2
@@ -52,6 +54,9 @@ npm view recursion-mcp-v2 version
 
 # Update to latest version
 npm update -g recursion-mcp-v2
+
+# Check for outdated packages
+npm outdated -g recursion-mcp-v2
 ```
 
 ### MCP Configuration Cleanup
