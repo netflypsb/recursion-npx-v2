@@ -1,0 +1,55 @@
+{
+  "name": "@recursion-mcp/npx",
+  "version": "1.0.0",
+  "description": "Recursive Language Model MCP server for unbounded document processing with local RAG",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "recursion-mcp": "dist/cli.js",
+    "recursion-mcp-v2": "dist/cli-v2.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "start:v2": "node dist/cli-v2.js",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "rlm",
+    "recursive-llm",
+    "rag",
+    "document-processing",
+    "knowledge-graph",
+    "sqlite-vec",
+    "ollama"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "better-sqlite3": "^11.0.0",
+    "sqlite-vec": "^0.1.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "xlsx": "^0.18.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/uuid": "^9.0.0",
+    "@types/pdf-parse": "^1.1.4",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
