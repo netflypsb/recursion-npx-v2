@@ -1,52 +1,117 @@
-# Recursion MCP
+# Recursion MCP V2
 
 [![npm version](https://img.shields.io/npm/v/recursion-mcp)](https://www.npmjs.com/package/recursion-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An NPX-installable MCP (Model Context Protocol) server for comprehensive document analysis with **two powerful approaches**:
-
-- **V1**: RAG + RLM with local Ollama (retrieval-based Q&A and deep analysis)
-- **V2**: Navigation-enabled recursive analysis (file-system based, no external APIs)
-
-## Quick Start
-
-```bash
-# Run directly without installing
-npx @recursion-mcp/npx
-
-# Or install globally
-npm install -g @recursion-mcp/npx
-recursion-mcp
-```
+An NPX-installable MCP (Model Context Protocol) server for **navigation-enabled recursive document analysis**. Works entirely offline with no external APIs required.
 
 ## Features
 
-### V1: RAG + RLM (Local AI)
-- **Document Ingestion**: PDF, DOCX, XLSX, TXT, MD support
-- **Smart Chunking**: Overlapping chunks preserving structure
-- **Local Embeddings**: Via Ollama (nomic-embed-text) for semantic search
-- **SQLite + FTS5**: Zero-infrastructure storage
-- **Local RAG**: Answer generation with Ollama (llama3, mistral, etc.)
-- **RLM Engine**: Recursive Language Model for unlimited context via Python
-- **Hybrid Search**: Vector + keyword with reciprocal rank fusion
-
-### V2: Navigation Analysis (Agent-Driven)
-- **No External APIs**: Pure file-system based, works offline
-- **Complete Document Analysis**: No missed content like brittle RAG
+- **No External APIs**: Pure file-system based, works completely offline
+- **Complete Document Analysis**: No missed content like brittle RAG chunking
 - **Hierarchical Navigation**: Read any section, any line range
 - **Persistent Analysis**: Save and retrieve agent-generated insights
 - **Markdown Conversion**: PDF/DOCX → structured markdown
 - **Recursive Reading**: Agent-controlled systematic analysis
+
+## Quick Start
+
+```bash
+# Run via NPX (no install needed)
+npx recursion-mcp recursion-mcp-v2
+
+# Or install globally
+npm install -g recursion-mcp
+
+# Run V2
+recursion-mcp-v2
+```
+
+## Terminal Commands
+
+### Package Management
+
+```bash
+# Install globally
+npm install -g recursion-mcp
+
+# Uninstall globally
+npm uninstall -g recursion-mcp
+
+# Check if installed globally
+npm list -g recursion-mcp
+
+# Check local project installation
+npm list recursion-mcp
+
+# View package info (version, dependencies, etc.)
+npm info recursion-mcp
+
+# View latest version available
+npm view recursion-mcp version
+
+# Update to latest version
+npm update -g recursion-mcp
+```
+
+### MCP Configuration Cleanup
+
+After uninstalling, remove the MCP server entry from your IDE config:
+
+**Windsurf:** `~/.codeium/windsurf/mcp_config.json`  
+**Claude Desktop:** `~/AppData/Roaming/Claude/config.json`  
+**Cursor:** `~/.cursor/mcp.json`
+
+Remove the `recursion-v2` entry under `mcpServers`.
+
+## Installation Verification
+
+After installation, verify it's working:
+
+```bash
+# Check if package is installed
+npm view recursion-mcp version
+
+# Test V2 server
+npx recursion-mcp recursion-mcp-v2 --help
+recursion-mcp-v2 --help
+```
+
+## Manual MCP Configuration
+
+If automatic IDE configuration doesn't work, copy this prompt for your AI assistant:
+
+> **Please add the Recursion V2 MCP server to my IDE's MCP configuration file.**
+> 
+> **For Windsurf:** Add this to `~/.codeium/windsurf/mcp_config.json`:
+> ```json
+> {
+>   "mcpServers": {
+>     "recursion-v2": {
+>       "command": "npx",
+>       "args": ["recursion-mcp", "recursion-mcp-v2"]
+>     }
+>   }
+> }
+> ```
+
+Or with absolute paths for global install:
+> ```json
+> {
+>   "mcpServers": {
+>     "recursion-v2": {
+>       "command": "node",
+>       "args": ["C:/Users/YOUR_USERNAME/AppData/Roaming/npm/node_modules/recursion-mcp/dist/cli-v2.js"]
+>     }
+>   }
+> }
+> ```
 
 ## Installation
 
 ### Via NPX (recommended)
 
 ```bash
-# Default: Run V1 (RAG/RLM)
-npx recursion-mcp
-
-# Run V2 (Navigation Analysis)
 npx recursion-mcp recursion-mcp-v2
 ```
 
@@ -54,9 +119,6 @@ npx recursion-mcp recursion-mcp-v2
 
 ```bash
 npm install -g recursion-mcp
-
-# Run V1
-recursion-mcp
 
 # Run V2
 recursion-mcp-v2
@@ -82,36 +144,13 @@ When you install globally, the package automatically configures MCP for detected
 npm run setup --prefix $(npm root -g)/recursion-mcp
 ```
 
-Or manually add to your IDE's MCP settings (see MCP Configuration section below).
+Or manually add to your IDE's MCP settings (see MCP Configuration section above).
 
 ### Prerequisites
 
-**For V1 (RAG/RLM):**
-- Node.js 18+
-- Ollama (for embeddings and LLM)
-  ```bash
-  ollama pull nomic-embed-text
-  ollama pull llama3
-  ```
-- Python 3 (for RLM REPL)
-
-**For V2 (Navigation):**
 - Node.js 18+ only (no other dependencies!)
 
 ## MCP Configuration
-
-### V1 Configuration (RAG/RLM)
-
-```json
-{
-  "mcpServers": {
-    "recursion": {
-      "command": "npx",
-      "args": ["recursion-mcp"]
-    }
-  }
-}
-```
 
 ### V2 Configuration (Navigation)
 
@@ -126,69 +165,7 @@ Or manually add to your IDE's MCP settings (see MCP Configuration section below)
 }
 ```
 
-## Which Version to Use?
-
-| Use Case | Recommended |
-|----------|-------------|
-| Quick Q&A on documents | **V1** - RAG with Ollama |
-| Deep analysis of large docs | **V2** - Navigation (complete coverage) |
-| No internet/external APIs | **V2** - Pure file system |
-| Code/math analysis | **V1** - RLM with Python REPL |
-| Complete book review | **V2** - Systematic section analysis |
-
-## V1 Tools (RAG/RLM)
-
-### `ingest_document`
-Ingest a document into the knowledge base.
-
-```json
-{
-  "filePath": "/path/to/document.pdf",
-  "title": "Optional Title"
-}
-```
-
-### `search_documents`
-Search across all ingested documents using hybrid search.
-
-```json
-{
-  "query": "search query",
-  "topK": 10,
-  "docId": "optional-doc-id"
-}
-```
-
-### `ask_documents`
-Ask a question and get an answer using RAG with Ollama.
-
-```json
-{
-  "question": "What is the main topic?",
-  "topK": 5,
-  "docId": "doc-id"
-}
-```
-
-### `rlm_analyze`
-Use Recursive Language Model for unlimited context analysis.
-
-```json
-{
-  "query": "Analyze the contract terms",
-  "docId": "doc-id",
-  "maxDepth": 1,
-  "maxIterations": 20
-}
-```
-
-### `list_documents`
-List all ingested documents.
-
-### `delete_document`
-Delete a document and all its data.
-
-## V2 Tools (Navigation)
+## Available Tools
 
 ### `ingest_document_v2`
 Convert and store document with navigable structure.
@@ -244,7 +221,7 @@ Save and retrieve agent-generated analysis.
 }
 ```
 
-## V2 Agent Analysis Pattern
+## Agent Analysis Pattern
 
 ```typescript
 // 1. Ingest document
@@ -268,47 +245,23 @@ const fullAnalysis = await get_analysis({ docId, sectionId: "full", analysisType
 
 ## Storage
 
-- **V1**: `~/.kw-os/documents.db` (SQLite with embeddings)
-- **V2**: `~/.kw-os/v2/documents/{doc-id}/` (file system)
-  - `document.md` - Full markdown
-  - `structure.json` - Hierarchical outline
-  - `analysis/` - Saved analyses
+Documents are stored at `~/.kw-os/v2/documents/{doc-id}/`:
+- `document.md` - Full markdown
+- `structure.json` - Hierarchical outline
+- `analysis/` - Saved analyses
 
 ## Architecture
 
-### V1: RAG + RLM
-- **RAG**: Retrieval Augmented Generation with local Ollama
-- **RLM**: Recursive Language Model via Python REPL for unlimited context
-- **Hybrid Search**: Vector similarity + BM25 keyword search
-
-### V2: Navigation Analysis
 - **File System Storage**: Markdown + JSON structure
 - **Hierarchical Navigation**: Section-level granularity
 - **Agent-Driven**: AI controls reading, no brittle retrieval
 - **Analysis Persistence**: Incremental understanding building
-
-## Comparison
-
-| Feature | V1 (RAG/RLM) | V2 (Navigation) |
-|---------|--------------|-----------------|
-| Coverage | Partial chunks | Complete document |
-| Dependencies | Ollama, Python | Node.js only |
-| Speed | Fast retrieval | Thorough analysis |
-| Depth | Surface | Deep, recursive |
-| Best For | Q&A | Complete reviews |
-| External APIs | Required (Ollama) | None |
-
-## Environment Variables
-
-### V1 Only
-- `OLLAMA_BASE_URL`: Ollama server (default: `http://localhost:11434`)
-- `OLLAMA_MODEL`: Chat model for RAG (default: `llama3`)
+- **Zero Dependencies**: Only requires Node.js 18+
 
 ## Documentation
 
 - [V2 Implementation Plan](version2/V2-Implementation-Plan.md)
 - [V2 Summary](version2/V2-Summary.md)
-- [V2 README](version2/README.md)
 
 ## License
 
@@ -316,6 +269,7 @@ MIT © netflypsb
 
 ## Links
 
-- [GitHub Repository](https://github.com/netflypsb/recursion-npx)
+- [GitHub Repository](https://github.com/netflypsb/recursion-npx-v2)
 - [NPM Package](https://www.npmjs.com/package/recursion-mcp)
-- [Issues](https://github.com/netflypsb/recursion-npx/issues)
+- [Issues](https://github.com/netflypsb/recursion-npx-v2/issues)
+
